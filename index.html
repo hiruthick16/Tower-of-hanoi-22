@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tower of Hanoi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .game {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      height: 400px;
+      margin-top: 50px;
+    }
+    .peg {
+      width: 100px;
+      height: 300px;
+      background: #ddd;
+      position: relative;
+      border: 2px solid #aaa;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+    .disk {
+      height: 30px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .disk1 { width: 60px; background: #f77; }
+    .disk2 { width: 80px; background: #7f7; }
+    .disk3 { width: 100px; background: #77f; }
+  </style>
+</head>
+<body>
+
+  <h1>Tower of Hanoi</h1>
+  <p>Move all the disks from the first peg to the last peg</p>
+
+  <div class="game">
+    <div class="peg" id="peg1">
+      <div class="disk disk3" data-size="3"></div>
+      <div class="disk disk2" data-size="2"></div>
+      <div class="disk disk1" data-size="1"></div>
+    </div>
+    <div class="peg" id="peg2"></div>
+    <div class="peg" id="peg3"></div>
+  </div>
+
+  <script>
+    let selectedDisk = null;
+
+    document.querySelectorAll('.peg').forEach(peg => {
+      peg.addEventListener('click', () => {
+        const topDisk = getTopDisk(peg);
+
+        if (selectedDisk) {
+          if (!topDisk || parseInt(selectedDisk.dataset.size) < parseInt(topDisk.dataset.size)) {
+            peg.appendChild(selectedDisk);
+            selectedDisk = null;
+
+            if (document.querySelector('#peg3').children.length === 3) {
+              setTimeout(() => alert('Congratulations! You solved it!'), 100);
+            }
+          }
+        } else if (topDisk) {
+          selectedDisk = topDisk;
+        }
+      });
+    });
+
+    function getTopDisk(peg) {
+      const children = peg.querySelectorAll('.disk');
+      return children[children.length - 1] || null;
+    }
+  </script>
+
+</body>
+</html>
